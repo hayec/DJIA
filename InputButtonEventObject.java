@@ -1,16 +1,17 @@
 package problem1;
 
+import java.time.LocalDate;
 import java.util.EventObject;
 
 public class InputButtonEventObject extends EventObject 
 {
 	private double data;
-	private double date;
+	private LocalDate date;
 	public InputButtonEventObject(Object source)
 	{
 		super(source);
 	}
-	public InputButtonEventObject(Object source, double data, double date)
+	public InputButtonEventObject(Object source, double data, LocalDate date)
 	{
 		super(source);
 		this.data = data;
@@ -25,7 +26,7 @@ public class InputButtonEventObject extends EventObject
 	{
 		return data;
 	}
-	public double getDate()
+	public LocalDate getDate()
 	{
 		return date;
 	}

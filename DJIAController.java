@@ -2,11 +2,13 @@ package problem1;
 import java.util.Scanner;
 import java.io.*;
 import java.text.DecimalFormat;
-import java.util.Calendar;
+import java.time.LocalDate;
 import javafx.stage.*;
-public class DJIAController implements Observer 
+public class DJIAController implements Observer, ModelObserver
 {
 	DJIAView view = new DJIAView();
+	DJIAInputView inputView = new DJIAInputView();
+	DJIAListView listView = new DJIAListView();
 	Data model = new Data();
 	Stage primaryStage;
 	String strDate;
@@ -15,37 +17,36 @@ public class DJIAController implements Observer
 	{
 		primaryStage = stage;
 	}
-	public void update(double data, double date)
+	public void update(double data, LocalDate date)
 	{
 		model.addDataPoint(data, date);
-		view.addPoint(date, data, Calendar.getInstance().get(Calendar.YEAR) + "-" + format.format(Calendar.getInstance().get(Calendar.MONTH) + 1) + "-" + format.format(Calendar.getInstance().get(Calendar.DAY_OF_MONTH)));
+	}
+	public void displayPoint(LocalDate date)
+	{
+		view.addPoint(getChartDate(date), model.getData(date));
+		listView.addPoint(date, model.getData(date));
 	}
 	public void loadData() throws FileNotFoundException
 	{
 		String input = new String();
-		double date;
+		int year, month, day;
 		double data;
 		boolean loop = true;
 		Scanner fileIn = new Scanner(new File("DJIA.txt"));
 		while(loop)
 		{
-			date = data = 0;
+			data = year = month = day = 0;
 			try
 			{
 				input = fileIn.nextLine();
-				date = Double.parseDouble(input.substring(0, 4));
-				strDate = input.substring(0, 10);
-				if(date%4 == 0)
-					date += (getDayLeap(Double.parseDouble(input.substring(5, 7))) + Double.parseDouble(input.substring(8, 10))) / 366.0;//Account for Leap Years
-				else
-					date += (getDay(Double.parseDouble(input.substring(5, 7))) + Double.parseDouble(input.substring(8, 10))) / 365.0;
-				
+				year = Integer.parseInt(input.substring(0, 4));
+				month = Integer.parseInt(input.substring(5, 7));
+				day = Integer.parseInt(input.substring(8, 10));
 				input = input.substring(12);
 				if(input.charAt(1) != ' ')//Check that data is there
 				{
 					data = Double.parseDouble(input);
-					model.addDataPoint(data, date);
-					view.addPoint(date, data, strDate);
+					model.addDataPoint(data, LocalDate.of(year, month, day));
 				}
 			}
 			catch(Exception e) {}
@@ -56,67 +57,24 @@ public class DJIAController implements Observer
 	public void display()
 	{
 		view.start(primaryStage);
+		listView.start(new Stage());
+		inputView.start(new Stage());
 	}
-	public void inputDisplay(Stage stage)
+	public void setInputButtonListener(InputButtonListener listener)
 	{
-		view.inputDisplay(stage);
+		inputView.setInputButtonListener(listener);
 	}
-	public double getDay(double month)
+	public void setModelListener(ModelListener listener)
 	{
-		if(month == 1)
-			return 0;
-		else if(month == 2)
-			return 31;
-		else if(month == 3)
-			return 59;
-		else if(month == 4)
-			return 90;
-		else if(month == 5)
-			return 120;
-		else if(month == 6)
-			return 151;
-		else if(month == 7)
-			return 181;
-		else if(month == 8)
-			return 212;
-		else if(month == 9)
-			return 243;
-		else if(month == 10)
-			return 273;
-		else if(month == 11)
-			return 304;
-		else if(month == 12)
-			return 334;
+		model.setModelListener(listener);
+	}
+	public double getChartDate(LocalDate date)
+	{
+		double chartDate = date.getYear();
+		if(chartDate%4 == 0)
+			chartDate += date.getDayOfYear() / 366.0;//Prevent integer parsing
 		else
-			return 0;//In case of unexpected value
-	}
-	public double getDayLeap(double month)
-	{
-		if(month == 1)
-			return 0;
-		else if(month == 2)
-			return 31;
-		else if(month == 3)
-			return 60;
-		else if(month == 4)
-			return 91;
-		else if(month == 5)
-			return 121;
-		else if(month == 6)
-			return 152;
-		else if(month == 7)
-			return 182;
-		else if(month == 8)
-			return 213;
-		else if(month == 9)
-			return 244;
-		else if(month == 10)
-			return 274;
-		else if(month == 11)
-			return 305;
-		else if(month == 12)
-			return 335;
-		else
-			return 0;//In case of unexpected value
+			chartDate += date.getDayOfYear() / 365.0;//Prevent integer parsing
+		return chartDate;
 	}
 }
