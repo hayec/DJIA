@@ -9,11 +9,14 @@ public class Demo extends Application
 	{
 		//Load controller
 		DJIAController control = new DJIAController(primaryStage);
+		//Load Observer Components
 		DataInput input = new DataInput();
 		ModelInput inputM = new ModelInput();
 		input.register(control);
 		inputM.register(control);
+		//Open the three display windows
 		control.display();
+		//Set model listener
 		control.setModelListener(new ModelListener()
 		{
 			@Override
@@ -23,7 +26,9 @@ public class Demo extends Application
 				inputM.notifyObserver();
 			}
 		});
+		//Load Local Data from File
 		control.loadData();
+		//Set Input Listener
 		control.setInputButtonListener(new InputButtonListener()
 		{
 			@Override

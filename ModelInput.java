@@ -5,8 +5,8 @@ import java.util.ArrayList;
 
 public class ModelInput implements PlotPoint 
 {
-	private ArrayList<ModelObserver> observers;
-	private LocalDate date;
+	private ArrayList<ModelObserver> observers;//List of Input Observers
+	private LocalDate date;//Transmit new data value, the data can be derived from the date by accessing the model
 	public ModelInput()
 	{
 		observers = new ArrayList<ModelObserver>();

@@ -4,8 +4,11 @@ import java.time.LocalDate;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public class DJIAListView 
@@ -15,14 +18,19 @@ public class DJIAListView
 	public void start(Stage stage)
 	{
 		list.setItems(items);
-		Scene scene = new Scene(list, 1280, 720);
+		Label lblTitle = new Label("Dow Jones Industrial Average");
+		lblTitle.setAlignment(Pos.CENTER);
+		VBox pane = new VBox();
+		pane.setAlignment(Pos.CENTER);
+		pane.getChildren().addAll(lblTitle, list);
+		Scene scene = new Scene(pane, 1280, 500);
 		stage.setScene(scene);
 		stage.show();
 	}
 	public void addPoint(LocalDate date, double data)
 	{
 		int index = -1;
-		for(int i = 0; i < list.getItems().size(); i++)
+		for(int i = 0; i < list.getItems().size(); i++)//Check for where in the list the new item should be placed
 		{
 			if(index == -1)
 			{	
@@ -45,17 +53,17 @@ public class DJIAListView
 		if(exists)//If so, delete the old one 
 		{	
 			if(index != -1)
-				list.getItems().add(index, "Value : " + data + "    Date : " + date.toString());
+				list.getItems().add(index, "Value : " + data + "    Date : " + date.toString());//If an index was found, add the item there
 			else
-				list.getItems().add("Value : " + data + "    Date : " + date.toString());
+				list.getItems().add("Value : " + data + "    Date : " + date.toString());//Otherwise, add the item at the end
 			list.getItems().remove(index2);
 		}
-		else
+		else//Otherwise proceed as normal
 		{
 			if(index != -1)
-				list.getItems().add(index, "Value : " + data + "    Date : " + date.toString());
+				list.getItems().add(index, "Value : " + data + "    Date : " + date.toString());//If an index was found, add the item there
 			else
-				list.getItems().add("Value : " + data + "    Date : " + date.toString());
+				list.getItems().add("Value : " + data + "    Date : " + date.toString());//Otherwise, add the item at the end
 		}
 	}
 }

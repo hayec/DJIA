@@ -23,7 +23,7 @@ public class DJIAView
 		chart.setCreateSymbols(false);
 		pane.getChildren().addAll(chart);
 		chart.getData().add(series);
-		Scene scene = new Scene(pane, 1280, 720);
+		Scene scene = new Scene(pane, 1280, 400);
 		primaryStage.setScene(scene);
 		primaryStage.show();
 	}

@@ -9,18 +9,13 @@ public class InputButtonEventObject extends EventObject
 	private LocalDate date;
 	public InputButtonEventObject(Object source)
 	{
-		super(source);
+		super(source);//Default Constructor
 	}
 	public InputButtonEventObject(Object source, double data, LocalDate date)
 	{
 		super(source);
-		this.data = data;
+		this.data = data;//Pass data and date along with default constructor
 		this.date = date;
-	}
-	public InputButtonEventObject(Object source, double data)
-	{
-		super(source);
-		this.data = data;
 	}
 	public double getData()
 	{

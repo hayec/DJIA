@@ -17,7 +17,7 @@ public class DJIAInputView
 	InputButtonListener listener;
 	public void start(Stage stage)
 	{
-		//Create Secondary Input Display
+		//Add GUI Components and Set Alignments
 		Label lblInput = new Label("Value : ");
 		Button btnInput = new Button("Add Data Point");
 		TextField txtInput = new TextField();
@@ -35,6 +35,7 @@ public class DJIAInputView
 		pane.setAlignment(Pos.CENTER);
 		pane.setSpacing(50);
 		datePic.setValue(LocalDate.now());//Set Default Time to the Current Date
+		//Set OK Button Action Event
 		btnInput.setOnAction(e -> {
 			InputButtonEventObject ev = new InputButtonEventObject(this, Double.parseDouble(txtInput.getText()), datePic.getValue());
 			if(listener != null)
@@ -42,7 +43,7 @@ public class DJIAInputView
 		});
 		Scene inputScene = new Scene(pane, 500, 400);
 		stage.setScene(inputScene);
-		stage.show();
+		stage.show();//Show Stage
 	}
 	public void setInputButtonListener(InputButtonListener listener)
 	{
